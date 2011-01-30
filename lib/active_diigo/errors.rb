@@ -19,21 +19,35 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'httparty'
-require 'json'
-
-require 'active_diigo'
-require 'active_diigo/base'
-require 'active_diigo/errors'
-require 'active_diigo/request'
-require 'active_diigo/response_object'
-  
 module ActiveDiigo
   
-  class << self; attr_accessor :api_key, :username, :password; end
-  
-  def self.version
-    File.read(File.join(File.dirname(__FILE__), '..', 'VERSION'))
+  module Errors
+    class ActiveDiigoError < StandardError
+      def initialize(status_code)
+        super("ActiveDiigo status #{status_code} - #{self.class}")
+      end
+    end
+    class NotAuthorizedError < ActiveDiigoError
+      def initialize; super(401); end
+    end
+    class ForbiddenError < ActiveDiigoError
+      def initialize; super(403); end
+    end
+    class BadRequestError < ActiveDiigoError
+      def initialize; super(400); end
+    end
+    class NotFoundError < ActiveDiigoError
+      def initialize; super(404); end
+    end
+    class InternalServerError < ActiveDiigoError
+      def initialize; super(500); end
+    end
+    class BadGatewayError < ActiveDiigoError
+      def initialize; super(502); end
+    end
+    class ServiceUnavailableError < ActiveDiigoError
+      def initialize; super(503); end
+    end
   end
   
 end

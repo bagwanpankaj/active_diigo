@@ -19,21 +19,45 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'httparty'
-require 'json'
-
-require 'active_diigo'
-require 'active_diigo/base'
-require 'active_diigo/errors'
-require 'active_diigo/request'
-require 'active_diigo/response_object'
-  
 module ActiveDiigo
   
-  class << self; attr_accessor :api_key, :username, :password; end
-  
-  def self.version
-    File.read(File.join(File.dirname(__FILE__), '..', 'VERSION'))
+  class Base
+    
+    class << self; attr_reader :request; end
+    attr_accessor :title, :url, :user, :desc, :tags, :shared, :created_at, :updated_at, :comments, :annotations, :readlater
+        
+    def initialize(options)
+      build_self(options)
+    end
+    
+    def self.find(user, options = {})
+      options.merge!({:user => user})
+      ResponseObject.new(connection.bookmarks(options), self).parsed_objects
+    end
+    
+    def self.save(title, url, options = {})
+      options.merge!({:title => title, :url => url})
+      connection.save
+    end
+    
+    private
+    
+    def self.active_request_connection
+      username, password = assign_access_credentials!
+      Request.new(username, password)
+    end
+    class << self; alias_method :connection, :active_request_connection; end
+    
+    def self.assign_access_credentials!
+      [ActiveDiigo.username, ActiveDiigo.password]
+    end
+    
+    def build_self(options)
+      options.each do |k,v|
+        send(:"#{k}=", v) if send(:respond_to?, :"#{k}=")
+      end
+    end
+    
   end
   
 end

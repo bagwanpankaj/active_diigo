@@ -19,21 +19,28 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'httparty'
-require 'json'
-
-require 'active_diigo'
-require 'active_diigo/base'
-require 'active_diigo/errors'
-require 'active_diigo/request'
-require 'active_diigo/response_object'
-  
 module ActiveDiigo
-  
-  class << self; attr_accessor :api_key, :username, :password; end
-  
-  def self.version
-    File.read(File.join(File.dirname(__FILE__), '..', 'VERSION'))
+  class Request
+    
+    include HTTParty
+    
+    base_uri 'https://secure.diigo.com/api/v2'
+
+    API_VERSION = 'v2'
+
+    def initialize(uname, password)
+      self.class.basic_auth uname, password
+    end
+
+    def bookmarks(options = {})
+      options.merge!({:key => ActiveDiigo.api_key})
+      self.class.get('/bookmarks', {:query => options})
+    end
+    
+    def save(options = {})
+      options.merge!({:key => ActiveDiigo.api_key})
+      self.class.post('/bookmarks', {:body => options})
+    end
+    
   end
-  
 end
