@@ -37,7 +37,7 @@ module ActiveDiigo
     
     def self.save(title, url, options = {})
       options.merge!({:title => title, :url => url})
-      connection.save
+      connection.save(options)
     end
     
     private
