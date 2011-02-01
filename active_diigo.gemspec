@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{active_diigo}
-  s.version = "0.0.2"
+  s.version = "0.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Bagwan Pankaj"]
-  s.date = %q{2011-01-30}
+  s.date = %q{2011-02-02}
   s.description = %q{ActiveDiigo is a wrapper for Diigo API(version: v2).}
   s.email = %q{me@bagwanpankaj.com}
   s.extra_rdoc_files = [
@@ -32,7 +32,8 @@ Gem::Specification.new do |s|
   s.summary = %q{Diigo Restful API wrapper; much like ActiveRecord}
   s.test_files = [
     "spec/active_diigo_spec.rb",
-    "spec/spec_helper.rb"
+    "spec/spec_helper.rb",
+    "spec/support/fake_web_stub.rb"
   ]
 
   if s.respond_to? :specification_version then
@@ -47,6 +48,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
+      s.add_development_dependency(%q<fakeweb>, [">= 0"])
     else
       s.add_dependency(%q<httparty>, [">= 0"])
       s.add_dependency(%q<json>, [">= 0"])
@@ -55,6 +57,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_dependency(%q<rcov>, [">= 0"])
+      s.add_dependency(%q<fakeweb>, [">= 0"])
     end
   else
     s.add_dependency(%q<httparty>, [">= 0"])
@@ -64,6 +67,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
     s.add_dependency(%q<rcov>, [">= 0"])
+    s.add_dependency(%q<fakeweb>, [">= 0"])
   end
 end
 
