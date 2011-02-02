@@ -42,7 +42,7 @@ module ActiveDiigo
     end
     
     def parse!
-      @parsed_response = JSON.parse(@raw_response)
+      @parsed_response = JSON.parse(@raw_response) rescue @raw_response.parsed_response
     end
     
     def validate_response!

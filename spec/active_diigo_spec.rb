@@ -2,6 +2,56 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "ActiveDiigo" do
   
+  describe ActiveDiigo do
+    before(:all) do
+      ActiveDiigo.api_key = 'TEST_API_KEY'
+      ActiveDiigo.username = 'test-user'
+      ActiveDiigo.password = 'test-pass'
+    end
+    
+    it "should have api_key as an accessor" do
+      ActiveDiigo.should respond_to(:api_key)
+      ActiveDiigo.api_key.should == 'TEST_API_KEY'
+    end
+    
+    it "should allow to set api_key" do
+      ActiveDiigo.should respond_to(:api_key)
+      ActiveDiigo.api_key = 'TEST_API_KEY_CHANGED'
+      ActiveDiigo.api_key.should == 'TEST_API_KEY_CHANGED'
+    end
+    
+    it "should have username as an accessor" do
+      ActiveDiigo.should respond_to(:username)
+      ActiveDiigo.username.should == 'test-user'
+    end
+    
+    it "should allow to set username" do
+      ActiveDiigo.should respond_to(:username)
+      ActiveDiigo.username = 'TEST_USER'
+      ActiveDiigo.username.should == 'TEST_USER'
+    end
+    
+    it "should have password as an accessor" do
+      ActiveDiigo.should respond_to(:password)
+      ActiveDiigo.password.should == 'test-pass'
+    end
+    
+    it "should allow to set password" do
+      ActiveDiigo.should respond_to(:password)
+      ActiveDiigo.password = 'TEST_PASS'
+      ActiveDiigo.password.should == 'TEST_PASS'
+    end
+    
+    it "should respond version method" do
+      ActiveDiigo.should respond_to(:version)
+    end
+    
+    it "should return current version of gem" do
+      ActiveDiigo.version.should == File.read(File.join(File.dirname(__FILE__), '..', 'VERSION'))
+    end
+    
+  end
+  
   describe ActiveDiigo::Request do
     before(:all) do
       ActiveDiigo.api_key = 'TEST_API_KEY'
@@ -72,6 +122,61 @@ describe "ActiveDiigo" do
       
       response = ActiveDiigo::Base.find('test-user')
       response.size.should == 10
+    end
+    
+    it "should find bookmarks with user test-user and return 2 bookmarks" do
+      mock_request_for("https://test-user:test-pass@secure.diigo.com/api/v2/bookmarks?count=2&user=test-user&key=TEST_API_KEY",
+       :fixture => 'bookmarks_count')
+      
+      response = ActiveDiigo::Base.find('test-user', :count => 2)
+      response.size.should == 2
+    end
+    
+    it "should find bookmarks with specified tags" do
+      mock_request_for("https://test-user:test-pass@secure.diigo.com/api/v2/bookmarks?tags=mysql%2C%20rvm&user=test-user&key=TEST_API_KEY",
+       :fixture => 'bookmarks_with_tags')
+      
+      response = ActiveDiigo::Base.find('test-user', :tags => 'mysql, rvm')
+      response.size.should == 1
+      response.first.tags.should include('mysql')
+    end
+    
+    it "should find bookmarks that includes tags searched for" do
+      mock_request_for("https://test-user:test-pass@secure.diigo.com/api/v2/bookmarks?tags=mysql%2C%20rvm&user=test-user&key=TEST_API_KEY",
+       :fixture => 'bookmarks_with_tags')
+      
+      response = ActiveDiigo::Base.find('test-user', :tags => 'mysql, rvm')
+      response.first.tags.should include('mysql')
+      response.first.tags.should include('rvm')
+    end    
+    
+    it "should save bookmark and should return success" do
+      mock_request_for("https://test-user:test-pass@secure.diigo.com/api/v2/bookmarks", :method => :post,
+       :fixture => 'save_success')      
+      response = ActiveDiigo::Base.save('test-title', 'http://testtitle.com')
+      response["message"].should == "Saved 1 bookmark(s)"
+      response['code'].should == 1
+    end
+    
+    it "should get ArgumentError while calling save without arguments" do
+      Proc.new do
+        response = ActiveDiigo::Base.save()
+      end.should raise_error(ArgumentError)
+    end
+    
+    it "should return object of class that inherits ActiveDiigo::Base" do
+      class MyDiigo < ActiveDiigo::Base; end
+      mock_request_for("https://test-user:test-pass@secure.diigo.com/api/v2/bookmarks?user=test-user&key=TEST_API_KEY")
+      
+      response = MyDiigo.find('test-user')
+      response.size.should == 10
+      response.first.should be_an_instance_of MyDiigo
+    end
+    
+    it "should respond to all methods in class that inherits ActiveDiigo::Base" do
+      class MyDiigo < ActiveDiigo::Base; end
+      MyDiigo.should respond_to(:find)
+      MyDiigo.should respond_to(:save)
     end
     
   end
