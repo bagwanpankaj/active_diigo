@@ -1,5 +1,7 @@
 ## ActiveDiigo
 
+[![Gem Version](https://badge.fury.io/rb/active_diigo.png)](http://badge.fury.io/rb/active_diigo)
+
 ### Description
 
 ActiveDiigo is a wrapper for Diigo API(version: v2). It provides ActiveRecord like interaction with Diigo API. You just need to inherit ActiveDiigo::Base in class you want to use active_diigo in. It's also works standalone and it's framework agnostic gem, enabling itself to be used in any ruby framework.
@@ -53,5 +55,5 @@ then
 
 ### Copyright
 
-Copyright (c) 2011 Bagwan Pankaj. See LICENSE for further details.
+Copyright (c) 2011-2014 Bagwan Pankaj. See LICENSE for further details.
 
