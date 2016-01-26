@@ -13,7 +13,7 @@ ActiveDiigo is a wrapper for Diigo API(version: v2). It provides ActiveRecord li
 as you install any other ruby gem
 
     [sudo] gem install active_diigo
-  
+
 using bundler
 
     gem 'active_diigo'
@@ -28,21 +28,21 @@ Setup API Key and user credentials in initializer or anywhere before using activ
 
     ActiveDiigo.api_key = 'YOUR_API_KEY'
     ActiveDiigo.username = '<user-name>'
-    ActiveDiigo.username = '<password>'
-  
+    ActiveDiigo.password = '<password>'
+
 then
 
     ActiveDiigo::Base.find(username, options)
     #=> returns array of ActiveDiigo::Base objects
     ActiveDiigo::Base.save(title, url, options)
-    #=> returns a hash with message (saved or not) 
+    #=> returns a hash with message (saved or not)
     #OR
     class MyDiigo < ActiveDiigo::Base; end
     MyDiigo.find(username, options)
     #=> Returns array of MyDiigo objects
 
 ### Contributing to active_diigo
- 
+
   * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
   * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
   * Fork the project
@@ -57,5 +57,5 @@ then
 
 ### Copyright
 
-Copyright (c) 2011-2014 Bagwan Pankaj. See LICENSE for further details.
+Copyright (c) 2011-2016 Bagwan Pankaj. See LICENSE for further details.
 

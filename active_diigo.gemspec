@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{active_diigo}
-  s.version = File.read("./VERSION")#"0.0.4"
+  s.version = File.read("./VERSION")
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Bagwan Pankaj"]
-  s.date = %q{2011-02-02}
+  s.date = %q{2016-01-26}
   s.description = %q{ActiveDiigo is a wrapper for Diigo API(version: v2).}
   s.email = %q{me@bagwanpankaj.com}
   s.extra_rdoc_files = [
